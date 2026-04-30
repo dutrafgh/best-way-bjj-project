@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Best Way BJJ</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#FFD700">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Best Way BJJ">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<meta name="apple-touch-fullscreen" content="yes">
+<link rel="icon" type="image/png" href="logo.png">
+
+<!-- SEO / Share -->
+<meta name="description" content="Sistema de Gestão - Best Way BJJ Barequeçaba">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #0a0a0a; color: #fff; overflow-x: hidden; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; touch-action: manipulation; }
+    
+    /* LOGIN */
+    #loginScreen { display: flex; justify-content: center; align-items: center; min-height: 100vh; width: 100%; background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%); }
+    .login-box { background: #1e1e1e; padding: 40px; border-radius: 20px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.15); border: 1px solid #333; width: 90%; max-width: 400px; text-align: center; }
+    .logo-img { width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; border: 3px solid #FFD700; object-fit: cover; }
+    .mini-logo { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #FFD700; object-fit: cover; }
+    .login-box h1 { color: #FFD700; margin-bottom: 5px; font-size: 26px; }
+    .login-box p { color: #999; margin-bottom: 25px; font-size: 14px; }
+    input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #444; background: #2a2a2a; color: #fff; border-radius: 8px; font-size: 14px; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #FFD700; }
+    button { width: 100%; padding: 14px; margin-top: 15px; background: linear-gradient(135deg, #FFD700 0%, #e6c200 100%); color: #0a0a0a; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3); }
+    button.secundario { background: #333; color: #FFD700; border: 1px solid #FFD700; }
+    button.danger { background: #ff4444; color: #fff; width: auto; padding: 8px 16px; margin: 0; font-size: 13px; }
+    button.btn-sm { width: auto; padding: 8px 16px; margin: 0; font-size: 13px; }
+    button.btn-edit { background: #0066cc; color: #fff; width: auto; padding: 8px 16px; margin: 0; font-size: 13px; }
+    #loginError { color: #ff4444; margin-top: 15px; font-size: 14px; display: none; }
+
+    /* PAINEL */
+    #painel { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
+    .header { background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%); padding: 20px; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .header-logo { display: flex; align-items: center; gap: 15px; }
+    .header h2 { color: #FFD700; }
+    .header button { width: auto; padding: 10px 20px; margin: 0; background: #ff4444; }
+    
+    .niver-banner { background: linear-gradient(135deg, #FFD700 0%, #ff8c00 100%); color: #0a0a0a; padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; font-weight: bold; display: none; }
+    
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab { padding: 12px 24px; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; cursor: pointer; transition: 0.3s; color: #fff; }
+    .tab.ativo { background: #FFD700; color: #0a0a0a; font-weight: bold; }
+    .tab:hover:not(.ativo) { border-color: #FFD700; color: #FFD700; }
+    .conteudo { display: none; }
+    .conteudo.ativo { display: block; }
+    .card { background: #1e1e1e; padding: 25px; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; }
+    .card h3 { color: #FFD700; margin-bottom: 20px; font-size: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
+    label { color: #999; font-size: 12px; margin-bottom: 5px; display: block; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 14px; text-align: left; border-bottom: 1px solid #333; }
+    th { color: #FFD700; font-size: 14px; }
+    td { font-size: 14px; }
+    .faixa { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
+    .faixa-branca { background: #fff; color: #000; border: 1px solid #ccc; }
+    .faixa-branca-adulto { background: #fff; color: #000; border: 1px solid #ccc; }
+    .faixa-cinza-branca { background: linear-gradient(90deg, #ccc 50%, #fff 50%); color: #000; }
+    .faixa-cinza { background: #888; color: #fff; }
+    .faixa-cinza-preta { background: linear-gradient(90deg, #888 50%, #000 50%); color: #fff; }
+    .faixa-amarela-branca { background: linear-gradient(90deg, #FFD700 50%, #fff 50%); color: #000; }
+    .faixa-amarela { background: #FFD700; color: #000; }
+    .faixa-amarela-preta { background: linear-gradient(90deg, #FFD700 50%, #000 50%); color: #fff; }
+    .faixa-laranja-branca { background: linear-gradient(90deg, #FF8C00 50%, #fff 50%); color: #000; }
+    .faixa-laranja { background: #FF8C00; color: #fff; }
+    .faixa-laranja-preta { background: linear-gradient(90deg, #FF8C00 50%, #000 50%); color: #fff; }
+    .faixa-verde-branca { background: linear-gradient(90deg, #00AA00 50%, #fff 50%); color: #000; }
+    .faixa-verde { background: #00AA00; color: #fff; }
+    .faixa-verde-preta { background: linear-gradient(90deg, #00AA00 50%, #000 50%); color: #fff; }
+    .faixa-azul { background: #0066cc; color: #fff; }
+    .faixa-roxa { background: #663399; color: #fff; }
+    .faixa-marrom { background: #8B4513; color: #fff; }
+    .faixa-preta { background: #000; color: #fff; border: 1px solid #FFD700; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+    
+    /* DASHBOARD STAT BOX CLICÁVEL */
+    .stat-box { background: #2a2a2a; padding: 20px; border-radius: 10px; border-left: 4px solid #FFD700; cursor: pointer; transition: 0.2s; }
+    .stat-box:hover { background: #333; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255,215,0,0.15); }
+    .stat-box h4 { color: #999; font-size: 14px; margin-bottom: 8px; }
+    .stat-box p { color: #FFD700; font-size: 28px; font-weight: bold; }
+    .stat-box .stat-hint { color: #555; font-size: 11px; margin-top: 6px; }
+
+    .niver-item { background: #2a2a2a; padding: 12px; border-radius: 8px; margin: 8px 0; border-left: 3px solid #FFD700; }
+    .status { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    .status-pendente { background: #ff8c00; color: #000; }
+    .status-pronto { background: #00aa00; color: #fff; }
+    .status-entregue { background: #0066cc; color: #fff; }
+
+    /* CAMPEONATOS */
+    .camp-card { background: #2a2a2a; border-radius: 12px; border: 1px solid #444; padding: 20px; margin-bottom: 15px; }
+    .camp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .camp-titulo { color: #FFD700; font-size: 18px; font-weight: bold; }
+    .camp-info { color: #999; font-size: 13px; margin-top: 4px; }
+    .camp-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .medalha { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    .medalha-ouro { background: #FFD700; color: #000; }
+    .medalha-prata { background: #C0C0C0; color: #000; }
+    .medalha-bronze { background: #CD7F32; color: #fff; }
+    .inscrito-item { background: #1e1e1e; padding: 10px 14px; border-radius: 8px; margin: 6px 0; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }
+    .resultado-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 6px 0; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
+    .modal-overlay.aberto { display: flex; }
+    .modal { background: #1e1e1e; border-radius: 15px; border: 1px solid #444; padding: 30px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+    .modal h3 { color: #FFD700; margin-bottom: 20px; font-size: 18px; }
+    .modal-close { float: right; background: #ff4444; color: #fff; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 13px; }
+    .historico-item { background: #2a2a2a; padding: 12px; border-radius: 8px; margin: 8px 0; border-left: 3px solid #FFD700; }
+    .empty-state { color: #666; text-align: center; padding: 40px; font-size: 15px; }
+    .tabs-camp { display: flex; gap: 8px; margin-bottom: 20px; }
+    .tab-camp { padding: 8px 18px; background: #2a2a2a; border: 1px solid #444; border-radius: 6px; cursor: pointer; font-size: 13px; color: #ccc; transition: 0.2s; }
+    .tab-camp.ativo { background: #FFD700; color: #000; font-weight: bold; border-color: #FFD700; }
+
+    /* FOTO DO ALUNO */
+    .foto-upload-area { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .foto-preview { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #FFD700; background: #2a2a2a; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .foto-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .foto-preview .foto-placeholder { font-size: 40px; color: #555; }
+    .foto-btn-upload { background: #333; color: #FFD700; border: 1px solid #FFD700; border-radius: 8px; padding: 8px 16px; font-size: 13px; cursor: pointer; width: auto; margin: 0; display: inline-block; text-align: center; }
+    #fotoInput { display: none; }
+    #fotoInputEdit { display: none; }
+
+    /* MODAL ALUNO DETALHES */
+    .aluno-detalhe-foto { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #FFD700; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 36px; color: #555; overflow: hidden; flex-shrink: 0; }
+    .aluno-detalhe-foto img { width: 100%; height: 100%; object-fit: cover; }
+    .aluno-detalhe-header { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
+    .aluno-detalhe-info { flex: 1; }
+    .aluno-detalhe-info h2 { color: #FFD700; font-size: 20px; margin-bottom: 6px; }
+    .detalhe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .detalhe-item { background: #2a2a2a; padding: 12px; border-radius: 8px; }
+    .detalhe-item label { color: #888; font-size: 11px; display: block; margin-bottom: 4px; }
+    .detalhe-item span { color: #fff; font-size: 14px; font-weight: 500; }
+
+    /* BARRA DE PESQUISA */
+    .search-bar-wrap { position: relative; margin-bottom: 16px; }
+    .search-bar-wrap input { padding-left: 42px; margin: 0; background: #2a2a2a; border: 1px solid #444; border-radius: 10px; font-size: 15px; }
+    .search-bar-wrap input:focus { border-color: #FFD700; }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 18px; pointer-events: none; }
+    .search-count { color: #666; font-size: 12px; margin-top: 6px; }
+
+    /* INSTALL BANNER */
+    #installBanner { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e1e1e; border: 1px solid #FFD700; border-radius: 14px; padding: 14px 20px; align-items: center; gap: 14px; z-index: 9999; box-shadow: 0 8px 30px rgba(0,0,0,0.5); max-width: 360px; width: 90%; }
+    #installBanner img { width: 40px; height: 40px; border-radius: 8px; }
+    #installBanner .install-txt { flex: 1; }
+    #installBanner .install-txt strong { color: #FFD700; display: block; font-size: 14px; }
+    #installBanner .install-txt span { color: #999; font-size: 12px; }
+    #installBanner .install-btn { background: #FFD700; color: #000; border: none; border-radius: 8px; padding: 10px 16px; font-weight: bold; font-size: 13px; cursor: pointer; width: auto; margin: 0; white-space: nowrap; }
+    #installBanner .install-close { background: none; border: none; color: #666; font-size: 20px; cursor: pointer; width: auto; padding: 0; margin: 0; line-height: 1; }
+
+    /* NOTIFICACOES */
+    #areaNotificacoes { margin-bottom: 15px; }
+    .notif-banner { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; border-radius: 12px; margin-bottom: 10px; font-size: 14px; line-height: 1.5; animation: slideIn 0.4s ease; position: relative; }
+    .notif-banner.niver { background: linear-gradient(135deg, #2a1f00, #3a2a00); border: 1px solid #FFD700; }
+    .notif-banner.camp  { background: linear-gradient(135deg, #001a2a, #002a3a); border: 1px solid #00aaff; }
+    .notif-icon { font-size: 26px; flex-shrink: 0; }
+    .notif-texto strong { display: block; font-size: 15px; margin-bottom: 4px; }
+    .notif-banner.niver .notif-texto strong { color: #FFD700; }
+    .notif-banner.camp  .notif-texto strong { color: #00aaff; }
+    .notif-texto span { color: #ccc; }
+    .notif-fechar { position: absolute; top: 10px; right: 14px; background: none; border: none; color: #666; font-size: 18px; cursor: pointer; width: auto; padding: 0; margin: 0; line-height: 1; }
+    .notif-fechar:hover { color: #fff; transform: none; box-shadow: none; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+    <div class="login-box">
+        <img src="logo.png" alt="Best Way Logo" class="logo-img">
+        <h1>Best Way BJJ</h1>
+        <p>Barequeçaba - São Sebastião</p>
+        <input type="email" id="email" placeholder="Email" value="admin@bestway.com">
+        <input type="password" id="senha" placeholder="Senha">
+        <button id="btnLogin">Entrar no Sistema</button>
+        <div id="loginError">Login inválido. Confere email e senha.</div>
+    </div>
+</div>
+
+<!-- PAINEL -->
+<div id="painel">
+    <div class="header">
+        <div class="header-logo">
+            <img src="logo.png" alt="Best Way" class="mini-logo">
+            <div>
+                <h2>Best Way BJJ Barequeçaba</h2>
+                <p style="color:#999; font-size:14px;">Sistema de Gestão de Alunos</p>
+            </div>
+        </div>
+        <button id="btnLogout">Sair</button>
+    </div>
+
+    <div id="niverBanner" class="niver-banner"></div>
+    <div id="areaNotificacoes"></div>
+
+    <div class="tabs">
+        <div class="tab ativo" onclick="mostrarAba('dashboard')">Dashboard</div>
+        <div class="tab" onclick="mostrarAba('cadastro')">Cadastrar Aluno</div>
+        <div class="tab" onclick="mostrarAba('chamada')">Lista de Chamada</div>
+        <div class="tab" onclick="mostrarAba('pedidos')">Pedidos</div>
+        <div class="tab" onclick="mostrarAba('aniversarios')">Aniversariantes</div>
+        <div class="tab" onclick="mostrarAba('campeonatos')">🏆 Campeonatos</div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="conteudo ativo">
+        <div class="stats">
+            <div class="stat-box" onclick="abrirListaAlunos('todos')">
+                <h4>Total de Alunos</h4>
+                <p id="totalAlunos">0</p>
+                <div class="stat-hint">Clique para ver todos</div>
+            </div>
+            <div class="stat-box" onclick="abrirListaAlunos('brancas')">
+                <h4>Faixas Brancas</h4>
+                <p id="totalBrancas">0</p>
+                <div class="stat-hint">Clique para ver</div>
+            </div>
+            <div class="stat-box" onclick="abrirListaAlunos('coloridas')">
+                <h4>Faixas Coloridas</h4>
+                <p id="totalColoridas">0</p>
+                <div class="stat-hint">Clique para ver</div>
+            </div>
+            <div class="stat-box" onclick="mostrarAba('pedidos')">
+                <h4>Pedidos Pendentes</h4>
+                <p id="totalPedidos">0</p>
+                <div class="stat-hint">Clique para ver pedidos</div>
+            </div>
+            <div class="stat-box" onclick="mostrarAba('campeonatos')">
+                <h4>Campeonatos</h4>
+                <p id="totalCampeonatos">0</p>
+                <div class="stat-hint">Clique para ver</div>
+            </div>
+            <div class="stat-box" onclick="mostrarAba('campeonatos')">
+                <h4>Medalhas de Ouro</h4>
+                <p id="totalOuro">0</p>
+                <div class="stat-hint">Clique para ver</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CADASTRO -->
+    <div id="cadastro" class="conteudo">
+        <div class="card">
+            <h3>Dados do Aluno</h3>
+            <div style="margin-bottom: 20px;">
+                <label>Foto do Aluno</label>
+                <div class="foto-upload-area">
+                    <div class="foto-preview" id="fotoPreviewBox">
+                        <span class="foto-placeholder">📷</span>
+                    </div>
+                    <label class="foto-btn-upload" for="fotoInput">📁 Escolher da Galeria</label>
+                    <input type="file" id="fotoInput" accept="image/*" capture="environment">
+                    <small style="color:#666;">JPG, PNG — max 5MB</small>
+                </div>
+            </div>
+            <div class="grid">
+                <div><label>Nome Completo *</label><input type="text" id="nomeAluno" placeholder="Nome do aluno"></div>
+                <div><label>Data de Nascimento *</label><input type="date" id="dataNasc"></div>
+                <div><label>CPF do Aluno</label><input type="text" id="cpfAluno" placeholder="000.000.000-00"></div>
+                <div><label>CPF do Responsável</label><input type="text" id="cpfResp" placeholder="Se menor de idade"></div>
+                <div><label>Telefone / WhatsApp *</label><input type="text" id="telefone" placeholder="(12) 99999-9999"></div>
+                <div><label>Endereço Completo</label><input type="text" id="endereco" placeholder="Rua, número, bairro"></div>
+                <div><label>Peso (kg)</label><input type="number" id="peso" placeholder="Ex: 75"></div>
+                <div><label>Altura (cm)</label><input type="number" id="altura" placeholder="Ex: 175"></div>
+                <div><label>Faixa Atual *</label>
+                    <select id="faixa">
+                        <option value="">Selecione a Faixa</option>
+                        <optgroup label="Infantil - Até 15 anos">
+                            <option value="branca">Branca</option>
+                            <option value="cinza-branca">Cinza e Branca</option>
+                            <option value="cinza">Cinza</option>
+                            <option value="cinza-preta">Cinza e Preta</option>
+                            <option value="amarela-branca">Amarela e Branca</option>
+                            <option value="amarela">Amarela</option>
+                            <option value="amarela-preta">Amarela e Preta</option>
+                            <option value="laranja-branca">Laranja e Branca</option>
+                            <option value="laranja">Laranja</option>
+                            <option value="laranja-preta">Laranja e Preta</option>
+                            <option value="verde-branca">Verde e Branca</option>
+                            <option value="verde">Verde</option>
+                            <option value="verde-preta">Verde e Preta</option>
+                        </optgroup>
+                        <optgroup label="Adulto - 16+ anos">
+                            <option value="branca-adulto">Branca</option>
+                            <option value="azul">Azul</option>
+                            <option value="roxa">Roxa</option>
+                            <option value="marrom">Marrom</option>
+                            <option value="preta">Preta</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div><label>Graus na Faixa</label><input type="number" id="graus" placeholder="0 a 4" min="0" max="4"></div>
+                <div><label>Turma</label>
+                    <select id="turma">
+                        <option value="">Selecione a Turma</option>
+                        <optgroup label="Kids — até 9 anos">
+                            <option value="Kids Manhã">Kids Manhã</option>
+                            <option value="Kids Tarde">Kids Tarde</option>
+                            <option value="Kids Noite">Kids Noite</option>
+                        </optgroup>
+                        <optgroup label="Infanto-Juvenil — 10 a 15 anos">
+                            <option value="Infanto-Juvenil Manhã">Infanto-Juvenil Manhã</option>
+                            <option value="Infanto-Juvenil Tarde">Infanto-Juvenil Tarde</option>
+                            <option value="Infanto-Juvenil Noite">Infanto-Juvenil Noite</option>
+                        </optgroup>
+                        <optgroup label="Adulto — 16+ anos">
+                            <option value="Adulto Manhã">Adulto Manhã</option>
+                            <option value="Adulto Tarde">Adulto Tarde</option>
+                            <option value="Adulto Noite">Adulto Noite</option>
+                            <option value="Avançado">Avançado</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div><label>Professor</label>
+                    <input type="text" id="professor" placeholder="Nome do professor">
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color:#FFD700; margin: 24px 0 16px; font-size:18px;">Pais / Responsáveis</h3>
+        <div class="grid">
+            <div><label>Nome do Responsável 1</label><input type="text" id="resp1Nome" placeholder="Nome completo"></div>
+            <div><label>Parentesco</label>
+                <select id="resp1Parentesco">
+                    <option value="">Selecione</option>
+                    <option value="Pai">Pai</option>
+                    <option value="Mãe">Mãe</option>
+                    <option value="Avô">Avô</option>
+                    <option value="Avó">Avó</option>
+                    <option value="Tio(a)">Tio(a)</option>
+                    <option value="Responsável Legal">Responsável Legal</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+            <div><label>Telefone / WhatsApp do Responsável 1</label><input type="text" id="resp1Tel" placeholder="(12) 99999-9999"></div>
+            <div><label>CPF do Responsável 1</label><input type="text" id="resp1Cpf" placeholder="000.000.000-00"></div>
+            <div><label>Nome do Responsável 2</label><input type="text" id="resp2Nome" placeholder="Nome completo (opcional)"></div>
+            <div><label>Parentesco</label>
+                <select id="resp2Parentesco">
+                    <option value="">Selecione</option>
+                    <option value="Pai">Pai</option>
+                    <option value="Mãe">Mãe</option>
+                    <option value="Avô">Avô</option>
+                    <option value="Avó">Avó</option>
+                    <option value="Tio(a)">Tio(a)</option>
+                    <option value="Responsável Legal">Responsável Legal</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+            <div><label>Telefone / WhatsApp do Responsável 2</label><input type="text" id="resp2Tel" placeholder="(12) 99999-9999 (opcional)"></div>
+            <div><label>CPF do Responsável 2</label><input type="text" id="resp2Cpf" placeholder="000.000.000-00 (opcional)"></div>
+        </div>
+        <button id="btnSalvarAluno">Salvar Aluno</button>
+        </div>
+    </div>
+
+    <!-- CHAMADA -->
+    <div id="chamada" class="conteudo">
+        <div class="card">
+            <h3>Lista de Chamada — <span id="dataHoje"></span></h3>
+
+            <!-- BARRA DE PESQUISA -->
+            <div class="search-bar-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="campoPesquisa" placeholder="Pesquisar aluno por nome, faixa ou telefone..." oninput="filtrarAlunos()">
+            </div>
+            <div class="search-count" id="contadorAlunos"></div>
+
+            <button class="secundario" style="margin-top:12px;" onclick="carregarAlunos()">↻ Atualizar Lista</button>
+            <table>
+                <thead><tr><th>Nome</th><th>Idade</th><th>Faixa</th><th>Turma</th><th>Professor</th><th>Peso</th><th>Telefone</th><th>Ações</th></tr></thead>
+                <tbody id="listaAlunos"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PEDIDOS -->
+    <div id="pedidos" class="conteudo">
+        <div class="card">
+            <h3>Novo Pedido</h3>
+            <div class="grid">
+                <div><label>Aluno *</label><select id="pedidoAluno"><option value="">Selecione o aluno</option></select></div>
+                <div><label>Tipo de Pedido *</label>
+                    <select id="tipoPedido">
+                        <option value="">Selecione</option>
+                        <option value="Quimono">Quimono</option>
+                        <option value="Rash Guard">Rash Guard</option>
+                        <option value="Faixa">Faixa</option>
+                        <option value="Camiseta">Camiseta Best Way</option>
+                        <option value="Bermuda">Bermuda de Treino</option>
+                    </select>
+                </div>
+                <div><label>Tamanho</label><input type="text" id="tamanhoPedido" placeholder="A2, M, G..."></div>
+                <div><label>Cor/Modelo</label><input type="text" id="corPedido" placeholder="Branco, Preto, Azul..."></div>
+                <div><label>Valor (R$)</label><input type="number" id="valorPedido" placeholder="150.00"></div>
+                <div><label>Status</label>
+                    <select id="statusPedido">
+                        <option value="Pendente">Pendente</option>
+                        <option value="Pronto">Pronto pra Entrega</option>
+                        <option value="Entregue">Entregue</option>
+                    </select>
+                </div>
+            </div>
+            <div><label>Observações</label><textarea id="obsPedido" rows="2" placeholder="Detalhes do pedido..."></textarea></div>
+            <button id="btnSalvarPedido">Registrar Pedido</button>
+        </div>
+        
+        <div class="card">
+            <h3>Pedidos Registrados</h3>
+            <table>
+                <thead><tr><th>Aluno</th><th>Item</th><th>Tamanho</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+                <tbody id="listaPedidos"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ANIVERSARIANTES -->
+    <div id="aniversarios" class="conteudo">
+        <div class="card">
+            <h3>🎉 Aniversariantes do Mês</h3>
+            <div id="listaNiver"></div>
+        </div>
+    </div>
+
+    <!-- CAMPEONATOS -->
+    <div id="campeonatos" class="conteudo">
+        <div class="tabs-camp">
+            <div class="tab-camp ativo" onclick="mostrarSubAba('campCadastro')">Cadastrar Campeonato</div>
+            <div class="tab-camp" onclick="mostrarSubAba('campLista')">Campeonatos</div>
+            <div class="tab-camp" onclick="mostrarSubAba('campHistorico')">Histórico por Aluno</div>
+        </div>
+
+        <div id="campCadastro" class="conteudo-camp ativo-camp">
+            <div class="card">
+                <h3>🏆 Novo Campeonato</h3>
+                <div class="grid">
+                    <div><label>Nome do Campeonato *</label><input type="text" id="campNome" placeholder="Ex: Copa São Sebastião de BJJ"></div>
+                    <div><label>Data *</label><input type="date" id="campData"></div>
+                    <div><label>Local / Cidade *</label><input type="text" id="campLocal" placeholder="Ex: São Sebastião - SP"></div>
+                    <div><label>Organização</label><input type="text" id="campOrg" placeholder="Ex: CBJJ, IBJJF..."></div>
+                </div>
+                <div><label>Observações</label><textarea id="campObs" rows="2" placeholder="Detalhes do campeonato..."></textarea></div>
+                <button id="btnSalvarCamp">Cadastrar Campeonato</button>
+            </div>
+        </div>
+
+        <div id="campLista" class="conteudo-camp" style="display:none;">
+            <div class="card">
+                <h3>Campeonatos Cadastrados</h3>
+                <div id="listaCampeonatos"><p class="empty-state">Nenhum campeonato cadastrado.</p></div>
+            </div>
+        </div>
+
+        <div id="campHistorico" class="conteudo-camp" style="display:none;">
+            <div class="card">
+                <h3>Histórico por Aluno</h3>
+                <div style="max-width:340px; margin-bottom:20px;">
+                    <label>Selecionar Aluno</label>
+                    <select id="historicoAlunoSelect" onchange="carregarHistoricoAluno()">
+                        <option value="">Selecione o aluno</option>
+                    </select>
+                </div>
+                <div id="historicoAluno"><p class="empty-state">Selecione um aluno para ver o histórico.</p></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL: Inscrever Alunos -->
+<div id="modalInscrever" class="modal-overlay">
+    <div class="modal">
+        <button class="modal-close" onclick="fecharModal('modalInscrever')">✕ Fechar</button>
+        <h3>👥 Inscrever Alunos — <span id="modalCampNome"></span></h3>
+        <div style="margin-bottom:15px;">
+            <label>Selecionar Aluno</label>
+            <select id="inscricaoAluno"><option value="">Selecione o aluno</option></select>
+        </div>
+        <div class="grid" style="margin-bottom:15px;">
+            <div><label>Categoria / Peso</label><input type="text" id="inscricaoCategoria" placeholder="Ex: Infantil -30kg"></div>
+            <div><label>Valor da Inscrição (R$)</label><input type="number" id="inscricaoValor" placeholder="80.00"></div>
+        </div>
+        <div><label>Observações</label><textarea id="inscricaoObs" rows="2" placeholder="Detalhes..."></textarea></div>
+        <button id="btnSalvarInscricao">Inscrever Aluno</button>
+        <div style="margin-top:20px;">
+            <h3 style="color:#FFD700; font-size:16px; margin-bottom:10px;">Alunos Inscritos</h3>
+            <div id="listaInscritos"></div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: Registrar Resultados -->
+<div id="modalResultados" class="modal-overlay">
+    <div class="modal">
+        <button class="modal-close" onclick="fecharModal('modalResultados')">✕ Fechar</button>
+        <h3>🥇 Registrar Resultados — <span id="modalResultCampNome"></span></h3>
+        <div style="margin-bottom:15px;">
+            <label>Aluno *</label>
+            <select id="resultadoAluno"><option value="">Selecione o aluno</option></select>
+        </div>
+        <div class="grid" style="margin-bottom:15px;">
+            <div><label>Categoria</label><input type="text" id="resultadoCategoria" placeholder="Ex: Infantil -30kg"></div>
+            <div><label>Resultado *</label>
+                <select id="resultadoMedalha">
+                    <option value="Ouro">🥇 1º Lugar - Ouro</option>
+                    <option value="Prata">🥈 2º Lugar - Prata</option>
+                    <option value="Bronze">🥉 3º Lugar - Bronze</option>
+                    <option value="Participou">Participou</option>
+                </select>
+            </div>
+        </div>
+        <div><label>Observações</label><textarea id="resultadoObs" rows="2" placeholder="Detalhes da luta, pontuação..."></textarea></div>
+        <button id="btnSalvarResultado">Salvar Resultado</button>
+        <div style="margin-top:20px;">
+            <h3 style="color:#FFD700; font-size:16px; margin-bottom:10px;">Resultados Registrados</h3>
+            <div id="listaResultados"></div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: Lista de Alunos do Dashboard -->
+<div id="modalListaAlunos" class="modal-overlay">
+    <div class="modal" style="max-width:700px;">
+        <button class="modal-close" onclick="fecharModal('modalListaAlunos')">✕ Fechar</button>
+        <h3 id="modalListaTitulo">Alunos</h3>
+        <div id="modalListaConteudo"></div>
+    </div>
+</div>
+
+<!-- MODAL: Ver Dados do Aluno -->
+<div id="modalAluno" class="modal-overlay">
+    <div class="modal" style="max-width:600px;">
+        <button class="modal-close" onclick="fecharModal('modalAluno')">✕ Fechar</button>
+        <div id="modalAlunoConteudo"></div>
+    </div>
+</div>
+
+<!-- MODAL: Editar Aluno -->
+<div id="modalEditarAluno" class="modal-overlay">
+    <div class="modal" style="max-width:700px;">
+        <button class="modal-close" onclick="fecharModal('modalEditarAluno')">✕ Fechar</button>
+        <h3>✏️ Editar Cadastro do Aluno</h3>
+
+        <!-- Foto no modal de edição -->
+        <div style="margin-bottom: 20px;">
+            <label>Foto do Aluno</label>
+            <div class="foto-upload-area">
+                <div class="foto-preview" id="fotoPreviewEdit">
+                    <span class="foto-placeholder">📷</span>
+                </div>
+                <label class="foto-btn-upload" for="fotoInputEdit">📁 Trocar Foto</label>
+                <input type="file" id="fotoInputEdit" accept="image/*" capture="environment">
+                <small style="color:#666;">JPG, PNG — max 5MB</small>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div><label>Nome Completo *</label><input type="text" id="editNome" placeholder="Nome do aluno"></div>
+            <div><label>Data de Nascimento *</label><input type="date" id="editDataNasc"></div>
+            <div><label>CPF do Aluno</label><input type="text" id="editCpf" placeholder="000.000.000-00"></div>
+            <div><label>CPF do Responsável</label><input type="text" id="editCpfResp" placeholder="Se menor de idade"></div>
+            <div><label>Telefone / WhatsApp *</label><input type="text" id="editTelefone" placeholder="(12) 99999-9999"></div>
+            <div><label>Endereço Completo</label><input type="text" id="editEndereco" placeholder="Rua, número, bairro"></div>
+            <div><label>Peso (kg)</label><input type="number" id="editPeso" placeholder="Ex: 75"></div>
+            <div><label>Altura (cm)</label><input type="number" id="editAltura" placeholder="Ex: 175"></div>
+            <div><label>Faixa Atual *</label>
+                <select id="editFaixa">
+                    <option value="">Selecione a Faixa</option>
+                    <optgroup label="Infantil - Até 15 anos">
+                        <option value="branca">Branca</option>
+                        <option value="cinza-branca">Cinza e Branca</option>
+                        <option value="cinza">Cinza</option>
+                        <option value="cinza-preta">Cinza e Preta</option>
+                        <option value="amarela-branca">Amarela e Branca</option>
+                        <option value="amarela">Amarela</option>
+                        <option value="amarela-preta">Amarela e Preta</option>
+                        <option value="laranja-branca">Laranja e Branca</option>
+                        <option value="laranja">Laranja</option>
+                        <option value="laranja-preta">Laranja e Preta</option>
+                        <option value="verde-branca">Verde e Branca</option>
+                        <option value="verde">Verde</option>
+                        <option value="verde-preta">Verde e Preta</option>
+                    </optgroup>
+                    <optgroup label="Adulto - 16+ anos">
+                        <option value="branca-adulto">Branca</option>
+                        <option value="azul">Azul</option>
+                        <option value="roxa">Roxa</option>
+                        <option value="marrom">Marrom</option>
+                        <option value="preta">Preta</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div><label>Graus na Faixa</label><input type="number" id="editGraus" placeholder="0 a 4" min="0" max="4"></div>
+            <div><label>Turma</label>
+                <select id="editTurma">
+                    <option value="">Selecione a Turma</option>
+                    <optgroup label="Kids — até 9 anos">
+                        <option value="Kids Manhã">Kids Manhã</option>
+                        <option value="Kids Tarde">Kids Tarde</option>
+                        <option value="Kids Noite">Kids Noite</option>
+                    </optgroup>
+                    <optgroup label="Infanto-Juvenil — 10 a 15 anos">
+                        <option value="Infanto-Juvenil Manhã">Infanto-Juvenil Manhã</option>
+                        <option value="Infanto-Juvenil Tarde">Infanto-Juvenil Tarde</option>
+                        <option value="Infanto-Juvenil Noite">Infanto-Juvenil Noite</option>
+                    </optgroup>
+                    <optgroup label="Adulto — 16+ anos">
+                        <option value="Adulto Manhã">Adulto Manhã</option>
+                        <option value="Adulto Tarde">Adulto Tarde</option>
+                        <option value="Adulto Noite">Adulto Noite</option>
+                        <option value="Avançado">Avançado</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div><label>Professor</label>
+                <input type="text" id="editProfessor" placeholder="Nome do professor">
+            </div>
+        </div>
+
+        <h3 style="color:#FFD700; margin: 24px 0 16px; font-size:16px;">Pais / Responsáveis</h3>
+        <div class="grid">
+            <div><label>Nome do Responsável 1</label><input type="text" id="editResp1Nome" placeholder="Nome completo"></div>
+            <div><label>Parentesco</label>
+                <select id="editResp1Parentesco">
+                    <option value="">Selecione</option>
+                    <option value="Pai">Pai</option>
+                    <option value="Mãe">Mãe</option>
+                    <option value="Avô">Avô</option>
+                    <option value="Avó">Avó</option>
+                    <option value="Tio(a)">Tio(a)</option>
+                    <option value="Responsável Legal">Responsável Legal</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+            <div><label>Telefone / WhatsApp do Responsável 1</label><input type="text" id="editResp1Tel" placeholder="(12) 99999-9999"></div>
+            <div><label>CPF do Responsável 1</label><input type="text" id="editResp1Cpf" placeholder="000.000.000-00"></div>
+            <div><label>Nome do Responsável 2</label><input type="text" id="editResp2Nome" placeholder="Nome completo (opcional)"></div>
+            <div><label>Parentesco</label>
+                <select id="editResp2Parentesco">
+                    <option value="">Selecione</option>
+                    <option value="Pai">Pai</option>
+                    <option value="Mãe">Mãe</option>
+                    <option value="Avô">Avô</option>
+                    <option value="Avó">Avó</option>
+                    <option value="Tio(a)">Tio(a)</option>
+                    <option value="Responsável Legal">Responsável Legal</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+            <div><label>Telefone / WhatsApp do Responsável 2</label><input type="text" id="editResp2Tel" placeholder="(12) 99999-9999 (opcional)"></div>
+            <div><label>CPF do Responsável 2</label><input type="text" id="editResp2Cpf" placeholder="000.000.000-00 (opcional)"></div>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+            <button id="btnSalvarEdicao" style="flex:1;">💾 Salvar Alterações</button>
+            <button id="btnDeletarAluno" class="danger" style="flex:0; padding:14px 20px; margin:0;">🗑️ Excluir Aluno</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, doc, updateDoc, deleteDoc, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBWhlp8Ftp8kLBZaxFqbHT4IUHyTed-esY",
+        authDomain: "bestway-bjj-bb9c0.firebaseapp.com",
+        projectId: "bestway-bjj-bb9c0",
+        storageBucket: "bestway-bjj-bb9c0.firebasestorage.app",
+        messagingSenderId: "297716818068",
+        appId: "1:297716818068:web:41f7768d5706e6b5515481"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let campAtualId = '';
+    let campAtualNome = '';
+    let todosAlunos = [];
+    let alunoEditandoId = '';
+    let fotoBase64Edit = '';
+
+    const loginScreen = document.getElementById('loginScreen');
+    const painel = document.getElementById('painel');
+    const btnLogin = document.getElementById('btnLogin');
+    const btnLogout = document.getElementById('btnLogout');
+    const loginError = document.getElementById('loginError');
+
+    btnLogin.addEventListener('click', () => {
+        signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('senha').value)
+        .catch(() => loginError.style.display = 'block');
+    });
+
+    btnLogout.addEventListener('click', () => signOut(auth));
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            loginScreen.style.display = 'none';
+            painel.style.display = 'block';
+            carregarAlunos();
+            carregarPedidos();
+            carregarAniversariantes();
+            verificarNotificacoes();
+            document.getElementById('dataHoje').innerText = new Date().toLocaleDateString('pt-BR');
+        } else {
+            loginScreen.style.display = 'flex';
+            painel.style.display = 'none';
+        }
+    });
+
+    // ---- FOTO CADASTRO ----
+    let fotoBase64 = '';
+    document.getElementById('fotoInput').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) { alert('Foto muito grande. Máximo 5MB.'); return; }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            fotoBase64 = ev.target.result;
+            const box = document.getElementById('fotoPreviewBox');
+            box.innerHTML = `<img src="${fotoBase64}" alt="Foto do aluno">`;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // ---- FOTO EDIÇÃO ----
+    document.getElementById('fotoInputEdit').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) { alert('Foto muito grande. Máximo 5MB.'); return; }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            fotoBase64Edit = ev.target.result;
+            const box = document.getElementById('fotoPreviewEdit');
+            box.innerHTML = `<img src="${fotoBase64Edit}" alt="Foto do aluno">`;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    function calcularIdade(dataNasc) {
+        const hoje = new Date();
+        const nasc = new Date(dataNasc);
+        let idade = hoje.getFullYear() - nasc.getFullYear();
+        const m = hoje.getMonth() - nasc.getMonth();
+        if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
+        return idade;
+    }
+
+    function formatarFaixa(faixa) {
+        const nomes = {
+            'branca': 'Branca', 'branca-adulto': 'Branca', 'cinza-branca': 'Cinza/Branca', 'cinza': 'Cinza', 'cinza-preta': 'Cinza/Preta',
+            'amarela-branca': 'Amarela/Branca', 'amarela': 'Amarela', 'amarela-preta': 'Amarela/Preta',
+            'laranja-branca': 'Laranja/Branca', 'laranja': 'Laranja', 'laranja-preta': 'Laranja/Preta',
+            'verde-branca': 'Verde/Branca', 'verde': 'Verde', 'verde-preta': 'Verde/Preta',
+            'azul': 'Azul', 'roxa': 'Roxa', 'marrom': 'Marrom', 'preta': 'Preta'
+        };
+        return nomes[faixa] || faixa;
+    }
+
+    function medalhaHTML(tipo) {
+        if (tipo === 'Ouro') return '<span class="medalha medalha-ouro">🥇 Ouro</span>';
+        if (tipo === 'Prata') return '<span class="medalha medalha-prata">🥈 Prata</span>';
+        if (tipo === 'Bronze') return '<span class="medalha medalha-bronze">🥉 Bronze</span>';
+        return '<span class="medalha" style="background:#555;color:#fff">Participou</span>';
+    }
+
+    function rowAluno(a) {
+        const idade = calcularIdade(a.dataNascimento);
+        return `
+            <tr>
+                <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;border:2px solid #FFD700;background:#2a2a2a;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">
+                            ${a.foto ? `<img src="${a.foto}" style="width:100%;height:100%;object-fit:cover;">` : '🥋'}
+                        </div>
+                        ${a.nome}
+                    </div>
+                </td>
+                <td>${idade} anos</td>
+                <td><span class="faixa faixa-${a.faixa}">${formatarFaixa(a.faixa)} ${a.graus}º</span></td>
+                <td>${a.turma || '-'}</td>
+                <td>${a.professor || '-'}</td>
+                <td>${a.peso ? a.peso + 'kg' : '-'}</td>
+                <td>${a.telefone}</td>
+                <td style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                    <button class="btn-sm secundario" onclick="verAluno('${a.id}')">👁 Ver</button>
+                    <button class="btn-edit" onclick="abrirEditarAluno('${a.id}')">✏️ Editar</button>
+                    <input type="checkbox" style="width:auto;margin:0;" onclick="event.stopPropagation()">
+                </td>
+            </tr>
+        `;
+    }
+
+    // ---- PESQUISA ----
+    window.filtrarAlunos = () => {
+        const termo = document.getElementById('campoPesquisa').value.toLowerCase().trim();
+        const tbody = document.getElementById('listaAlunos');
+        tbody.innerHTML = '';
+
+        const filtrados = todosAlunos.filter(a =>
+            a.nome.toLowerCase().includes(termo) ||
+            formatarFaixa(a.faixa).toLowerCase().includes(termo) ||
+            (a.telefone || '').includes(termo)
+        );
+
+        if (filtrados.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#666; padding:30px;">Nenhum aluno encontrado para "${termo}"</td></tr>`;
+        } else {
+            filtrados.forEach(a => { tbody.innerHTML += rowAluno(a); });
+        }
+
+        document.getElementById('contadorAlunos').innerText =
+            termo ? `${filtrados.length} de ${todosAlunos.length} aluno(s) encontrado(s)` : `${todosAlunos.length} aluno(s) cadastrado(s)`;
+    }
+
+    // ---- DASHBOARD: Abrir lista de alunos ----
+    window.abrirListaAlunos = (filtro) => {
+        const titulos = { todos: 'Todos os Alunos', brancas: 'Alunos — Faixa Branca', coloridas: 'Alunos — Faixas Coloridas' };
+        document.getElementById('modalListaTitulo').innerText = titulos[filtro] || 'Alunos';
+
+        let lista = todosAlunos;
+        if (filtro === 'brancas') lista = todosAlunos.filter(a => a.faixa === 'branca' || a.faixa === 'branca-adulto');
+        if (filtro === 'coloridas') lista = todosAlunos.filter(a => a.faixa !== 'branca' && a.faixa !== 'branca-adulto');
+
+        const div = document.getElementById('modalListaConteudo');
+        if (lista.length === 0) {
+            div.innerHTML = '<p class="empty-state">Nenhum aluno nesta categoria.</p>';
+        } else {
+            div.innerHTML = lista.map(a => `
+                <div class="inscrito-item">
+                    <div style="display:flex; align-items:center; gap:14px; flex:1; cursor:pointer;" onclick="verAluno('${a.id}')">
+                        <div style="width:44px; height:44px; border-radius:50%; overflow:hidden; border:2px solid #FFD700; flex-shrink:0; background:#2a2a2a; display:flex; align-items:center; justify-content:center; font-size:20px;">
+                            ${a.foto ? `<img src="${a.foto}" style="width:100%;height:100%;object-fit:cover;">` : '🥋'}
+                        </div>
+                        <div>
+                            <strong>${a.nome}</strong>
+                            <div style="color:#999; font-size:12px;">${calcularIdade(a.dataNascimento)} anos &nbsp;|&nbsp; ${a.telefone || '-'}</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                        <span class="faixa faixa-${a.faixa}">${formatarFaixa(a.faixa)} ${a.graus}º</span>
+                        <button class="btn-edit" onclick="abrirEditarAluno('${a.id}')">✏️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('modalListaAlunos').classList.add('aberto');
+    }
+
+    window.verAluno = (id) => {
+        const a = todosAlunos.find(x => x.id === id);
+        if (!a) return;
+        const idade = calcularIdade(a.dataNascimento);
+        const nascFmt = a.dataNascimento ? new Date(a.dataNascimento + 'T00:00:00').toLocaleDateString('pt-BR') : '-';
+
+        document.getElementById('modalAlunoConteudo').innerHTML = `
+            <div class="aluno-detalhe-header">
+                <div class="aluno-detalhe-foto">
+                    ${a.foto ? `<img src="${a.foto}" alt="${a.nome}">` : '🥋'}
+                </div>
+                <div class="aluno-detalhe-info">
+                    <h2>${a.nome}</h2>
+                    <span class="faixa faixa-${a.faixa}">${formatarFaixa(a.faixa)} ${a.graus}º grau</span>
+                </div>
+            </div>
+            <div class="detalhe-grid">
+                <div class="detalhe-item"><label>Data de Nascimento</label><span>${nascFmt}</span></div>
+                <div class="detalhe-item"><label>Idade</label><span>${idade} anos</span></div>
+                <div class="detalhe-item"><label>Telefone / WhatsApp</label><span>${a.telefone || '-'}</span></div>
+                <div class="detalhe-item"><label>CPF do Aluno</label><span>${a.cpf || '-'}</span></div>
+                <div class="detalhe-item"><label>CPF do Responsável</label><span>${a.cpfResponsavel || '-'}</span></div>
+                <div class="detalhe-item"><label>Peso</label><span>${a.peso ? a.peso + ' kg' : '-'}</span></div>
+                <div class="detalhe-item"><label>Altura</label><span>${a.altura ? a.altura + ' cm' : '-'}</span></div>
+                <div class="detalhe-item"><label>Turma</label><span>${a.turma || '-'}</span></div>
+                <div class="detalhe-item"><label>Professor</label><span>${a.professor || '-'}</span></div>
+                <div class="detalhe-item"><label>Endereço</label><span>${a.endereco || '-'}</span></div>
+            </div>
+            ${(a.resp1Nome || a.resp2Nome) ? `
+            <div style="margin-top:16px;">
+                <div style="color:#FFD700; font-size:13px; font-weight:bold; margin-bottom:10px;">Pais / Responsáveis</div>
+                ${a.resp1Nome ? `
+                <div class="detalhe-grid" style="margin-bottom:10px;">
+                    <div class="detalhe-item"><label>${a.resp1Parentesco || 'Responsável 1'}</label><span>${a.resp1Nome}</span></div>
+                    <div class="detalhe-item"><label>Telefone</label><span>${a.resp1Tel ? `<a href="https://wa.me/55${a.resp1Tel.replace(/\D/g,'')}" target="_blank" style="color:#25D366;">📲 ${a.resp1Tel}</a>` : '-'}</span></div>
+                    ${a.resp1Cpf ? `<div class="detalhe-item"><label>CPF</label><span>${a.resp1Cpf}</span></div>` : ''}
+                </div>` : ''}
+                ${a.resp2Nome ? `
+                <div class="detalhe-grid">
+                    <div class="detalhe-item"><label>${a.resp2Parentesco || 'Responsável 2'}</label><span>${a.resp2Nome}</span></div>
+                    <div class="detalhe-item"><label>Telefone</label><span>${a.resp2Tel ? `<a href="https://wa.me/55${a.resp2Tel.replace(/\D/g,'')}" target="_blank" style="color:#25D366;">📲 ${a.resp2Tel}</a>` : '-'}</span></div>
+                    ${a.resp2Cpf ? `<div class="detalhe-item"><label>CPF</label><span>${a.resp2Cpf}</span></div>` : ''}
+                </div>` : ''}
+            </div>` : ''}
+            <div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;">
+                ${a.telefone ? `<a href="https://wa.me/55${a.telefone.replace(/\D/g,'')}" target="_blank" style="flex:1;">
+                    <button style="background:#25D366; color:#fff; margin-top:0; width:100%;">📲 Abrir WhatsApp</button>
+                </a>` : ''}
+                <button onclick="abrirEditarAluno('${a.id}')" style="flex:1; background:#0066cc; color:#fff; margin-top:0;">✏️ Editar Cadastro</button>
+            </div>
+        `;
+
+        fecharModal('modalListaAlunos');
+        document.getElementById('modalAluno').classList.add('aberto');
+    }
+
+    // ---- EDITAR ALUNO ----
+    window.abrirEditarAluno = (id) => {
+        const a = todosAlunos.find(x => x.id === id);
+        if (!a) return;
+        alunoEditandoId = id;
+        fotoBase64Edit = a.foto || '';
+
+        document.getElementById('editNome').value = a.nome || '';
+        document.getElementById('editDataNasc').value = a.dataNascimento || '';
+        document.getElementById('editCpf').value = a.cpf || '';
+        document.getElementById('editCpfResp').value = a.cpfResponsavel || '';
+        document.getElementById('editTelefone').value = a.telefone || '';
+        document.getElementById('editEndereco').value = a.endereco || '';
+        document.getElementById('editPeso').value = a.peso || '';
+        document.getElementById('editAltura').value = a.altura || '';
+        document.getElementById('editFaixa').value = a.faixa || '';
+        document.getElementById('editGraus').value = a.graus || '0';
+        document.getElementById('editTurma').value = a.turma || '';
+        document.getElementById('editProfessor').value = a.professor || '';
+        document.getElementById('editResp1Nome').value = a.resp1Nome || '';
+        document.getElementById('editResp1Parentesco').value = a.resp1Parentesco || '';
+        document.getElementById('editResp1Tel').value = a.resp1Tel || '';
+        document.getElementById('editResp1Cpf').value = a.resp1Cpf || '';
+        document.getElementById('editResp2Nome').value = a.resp2Nome || '';
+        document.getElementById('editResp2Parentesco').value = a.resp2Parentesco || '';
+        document.getElementById('editResp2Tel').value = a.resp2Tel || '';
+        document.getElementById('editResp2Cpf').value = a.resp2Cpf || '';
+
+        const previewEdit = document.getElementById('fotoPreviewEdit');
+        previewEdit.innerHTML = a.foto
+            ? `<img src="${a.foto}" alt="Foto">`
+            : '<span class="foto-placeholder">📷</span>';
+
+        fecharModal('modalAluno');
+        fecharModal('modalListaAlunos');
+        document.getElementById('modalEditarAluno').classList.add('aberto');
+    }
+
+    document.getElementById('btnSalvarEdicao').addEventListener('click', async () => {
+        if (!alunoEditandoId) return;
+        const dados = {
+            nome: document.getElementById('editNome').value,
+            dataNascimento: document.getElementById('editDataNasc').value,
+            cpf: document.getElementById('editCpf').value,
+            cpfResponsavel: document.getElementById('editCpfResp').value,
+            telefone: document.getElementById('editTelefone').value,
+            endereco: document.getElementById('editEndereco').value,
+            peso: document.getElementById('editPeso').value,
+            altura: document.getElementById('editAltura').value,
+            faixa: document.getElementById('editFaixa').value,
+            graus: document.getElementById('editGraus').value || '0',
+            turma: document.getElementById('editTurma').value,
+            professor: document.getElementById('editProfessor').value,
+            resp1Nome: document.getElementById('editResp1Nome').value,
+            resp1Parentesco: document.getElementById('editResp1Parentesco').value,
+            resp1Tel: document.getElementById('editResp1Tel').value,
+            resp1Cpf: document.getElementById('editResp1Cpf').value,
+            resp2Nome: document.getElementById('editResp2Nome').value,
+            resp2Parentesco: document.getElementById('editResp2Parentesco').value,
+            resp2Tel: document.getElementById('editResp2Tel').value,
+            resp2Cpf: document.getElementById('editResp2Cpf').value,
+            foto: fotoBase64Edit,
+        };
+        if (!dados.nome || !dados.dataNascimento || !dados.telefone || !dados.faixa) {
+            alert('Preenche Nome, Data Nasc, Telefone e Faixa');
+            return;
+        }
+        try {
+            await updateDoc(doc(db, "alunos", alunoEditandoId), dados);
+            alert('Cadastro atualizado com sucesso!');
+            fecharModal('modalEditarAluno');
+            alunoEditandoId = '';
+            fotoBase64Edit = '';
+            carregarAlunos();
+            carregarAniversariantes();
+        } catch (e) { alert('Erro ao salvar: ' + e.message); }
+    });
+
+    document.getElementById('btnDeletarAluno').addEventListener('click', async () => {
+        if (!alunoEditandoId) return;
+        const a = todosAlunos.find(x => x.id === alunoEditandoId);
+        if (!confirm(`Tem certeza que quer excluir o aluno "${a?.nome}"? Esta ação não pode ser desfeita.`)) return;
+        try {
+            await deleteDoc(doc(db, "alunos", alunoEditandoId));
+            alert('Aluno excluído.');
+            fecharModal('modalEditarAluno');
+            alunoEditandoId = '';
+            fotoBase64Edit = '';
+            carregarAlunos();
+            carregarAniversariantes();
+        } catch(e) { alert('Erro ao excluir: ' + e.message); }
+    });
+
+    // ---- ALUNOS ----
+    document.getElementById('btnSalvarAluno').addEventListener('click', async () => {
+        const aluno = {
+            nome: document.getElementById('nomeAluno').value,
+            dataNascimento: document.getElementById('dataNasc').value,
+            cpf: document.getElementById('cpfAluno').value,
+            cpfResponsavel: document.getElementById('cpfResp').value,
+            telefone: document.getElementById('telefone').value,
+            endereco: document.getElementById('endereco').value,
+            peso: document.getElementById('peso').value,
+            altura: document.getElementById('altura').value,
+            faixa: document.getElementById('faixa').value,
+            graus: document.getElementById('graus').value || '0',
+            turma: document.getElementById('turma').value,
+            professor: document.getElementById('professor').value,
+            resp1Nome: document.getElementById('resp1Nome').value,
+            resp1Parentesco: document.getElementById('resp1Parentesco').value,
+            resp1Tel: document.getElementById('resp1Tel').value,
+            resp1Cpf: document.getElementById('resp1Cpf').value,
+            resp2Nome: document.getElementById('resp2Nome').value,
+            resp2Parentesco: document.getElementById('resp2Parentesco').value,
+            resp2Tel: document.getElementById('resp2Tel').value,
+            resp2Cpf: document.getElementById('resp2Cpf').value,
+            foto: fotoBase64,
+            criadoEm: new Date()
+        };
+        if (!aluno.nome || !aluno.dataNascimento || !aluno.telefone || !aluno.faixa) {
+            alert('Preenche Nome, Data Nasc, Telefone e Faixa');
+            return;
+        }
+        try {
+            await addDoc(collection(db, "alunos"), aluno);
+            alert('Aluno cadastrado com sucesso!');
+            document.querySelectorAll('#cadastro input, #cadastro select').forEach(el => el.value = '');
+            fotoBase64 = '';
+            document.getElementById('fotoPreviewBox').innerHTML = '<span class="foto-placeholder">📷</span>';
+            carregarAlunos();
+            carregarAniversariantes();
+        } catch (e) { alert('Erro ao salvar: ' + e.message); }
+    });
+
+    window.carregarAlunos = async () => {
+        const lista = document.getElementById('listaAlunos');
+        const selectPedido = document.getElementById('pedidoAluno');
+        const selectInscricao = document.getElementById('inscricaoAluno');
+        const selectResultado = document.getElementById('resultadoAluno');
+        const selectHistorico = document.getElementById('historicoAlunoSelect');
+        lista.innerHTML = '<tr><td colspan="8">Carregando...</td></tr>';
+        selectPedido.innerHTML = '<option value="">Selecione o aluno</option>';
+        selectInscricao.innerHTML = '<option value="">Selecione o aluno</option>';
+        selectResultado.innerHTML = '<option value="">Selecione o aluno</option>';
+        selectHistorico.innerHTML = '<option value="">Selecione o aluno</option>';
+        
+        const q = query(collection(db, "alunos"), orderBy("nome"));
+        const querySnapshot = await getDocs(q);
+        lista.innerHTML = '';
+        todosAlunos = [];
+        let total = 0, brancas = 0, coloridas = 0;
+        
+        querySnapshot.forEach((d) => {
+            const a = d.data();
+            todosAlunos.push({ id: d.id, ...a });
+            total++;
+            if(a.faixa === 'branca' || a.faixa === 'branca-adulto') brancas++; else coloridas++;
+            lista.innerHTML += rowAluno({ id: d.id, ...a });
+            const opt = `<option value="${d.id}">${a.nome}</option>`;
+            selectPedido.innerHTML += opt;
+            selectInscricao.innerHTML += opt;
+            selectResultado.innerHTML += opt;
+            selectHistorico.innerHTML += opt;
+        });
+        
+        document.getElementById('totalAlunos').innerText = total;
+        document.getElementById('totalBrancas').innerText = brancas;
+        document.getElementById('totalColoridas').innerText = coloridas;
+        document.getElementById('contadorAlunos').innerText = `${total} aluno(s) cadastrado(s)`;
+        document.getElementById('campoPesquisa').value = '';
+    }
+
+    // ---- PEDIDOS ----
+    document.getElementById('btnSalvarPedido').addEventListener('click', async () => {
+        const pedido = {
+            alunoId: document.getElementById('pedidoAluno').value,
+            alunoNome: document.getElementById('pedidoAluno').options[document.getElementById('pedidoAluno').selectedIndex].text,
+            tipo: document.getElementById('tipoPedido').value,
+            tamanho: document.getElementById('tamanhoPedido').value,
+            cor: document.getElementById('corPedido').value,
+            valor: parseFloat(document.getElementById('valorPedido').value) || 0,
+            status: document.getElementById('statusPedido').value,
+            observacoes: document.getElementById('obsPedido').value,
+            criadoEm: new Date()
+        };
+        if (!pedido.alunoId || !pedido.tipo) { alert('Selecione o aluno e tipo de pedido'); return; }
+        try {
+            await addDoc(collection(db, "pedidos"), pedido);
+            alert('Pedido registrado!');
+            document.querySelectorAll('#pedidos input, #pedidos select, #pedidos textarea').forEach(el => el.value = '');
+            carregarPedidos();
+        } catch (e) { alert('Erro ao salvar: ' + e.message); }
+    });
+
+    window.carregarPedidos = async () => {
+        const lista = document.getElementById('listaPedidos');
+        lista.innerHTML = '<tr><td colspan="8">Carregando...</td></tr>';
+        const q = query(collection(db, "pedidos"), orderBy("criadoEm", "desc"));
+        const querySnapshot = await getDocs(q);
+        lista.innerHTML = '';
+        let pendentes = 0;
+        querySnapshot.forEach((d) => {
+            const p = d.data();
+            if(p.status === 'Pendente') pendentes++;
+            lista.innerHTML += `
+                <tr>
+                    <td>${p.alunoNome}</td>
+                    <td>${p.tipo} ${p.cor}</td>
+                    <td>${p.tamanho || '-'}</td>
+                    <td>R$ ${p.valor.toFixed(2)}</td>
+                    <td><span class="status status-${p.status.toLowerCase()}">${p.status}</span></td>
+                    <td><button class="danger" onclick="deletarPedido('${d.id}')">Excluir</button></td>
+                </tr>
+            `;
+        });
+        document.getElementById('totalPedidos').innerText = pendentes;
+    }
+
+    window.deletarPedido = async (id) => {
+        if(confirm('Excluir este pedido?')) {
+            await deleteDoc(doc(db, "pedidos", id));
+            carregarPedidos();
+        }
+    }
+
+    // ---- ANIVERSARIANTES ----
+    window.carregarAniversariantes = async () => {
+        const listaNiver = document.getElementById('listaNiver');
+        const niverBanner = document.getElementById('niverBanner');
+        const mesAtual = new Date().getMonth() + 1;
+        listaNiver.innerHTML = '';
+        const q = query(collection(db, "alunos"), orderBy("nome"));
+        const querySnapshot = await getDocs(q);
+        let nivers = [];
+        querySnapshot.forEach((d) => {
+            const a = d.data();
+            const mesNasc = new Date(a.dataNascimento).getMonth() + 1;
+            if(mesNasc === mesAtual) {
+                const dia = new Date(a.dataNascimento).getDate();
+                const idade = calcularIdade(a.dataNascimento);
+                nivers.push({...a, dia, idade});
+            }
+        });
+        if(nivers.length > 0) {
+            niverBanner.style.display = 'block';
+            niverBanner.innerHTML = `🎉 ${nivers.length} aniversariante${nivers.length > 1 ? 's' : ''} este mês!`;
+            nivers.sort((a,b) => a.dia - b.dia);
+            nivers.forEach(a => {
+                listaNiver.innerHTML += `
+                    <div class="niver-item">
+                        <strong>${a.nome}</strong> - Dia ${a.dia} - Faz ${a.idade + 1} anos 🎂
+                        <br><small>Faixa ${formatarFaixa(a.faixa)} ${a.graus}º | ${a.telefone}</small>
+                    </div>
+                `;
+            });
+        } else {
+            niverBanner.style.display = 'none';
+            listaNiver.innerHTML = '<p style="color:#999;">Nenhum aniversariante este mês.</p>';
+        }
+    }
+
+    // ---- CAMPEONATOS ----
+    document.getElementById('btnSalvarCamp').addEventListener('click', async () => {
+        const camp = {
+            nome: document.getElementById('campNome').value,
+            data: document.getElementById('campData').value,
+            local: document.getElementById('campLocal').value,
+            organizacao: document.getElementById('campOrg').value,
+            observacoes: document.getElementById('campObs').value,
+            criadoEm: new Date()
+        };
+        if (!camp.nome || !camp.data || !camp.local) { alert('Preenche Nome, Data e Local'); return; }
+        try {
+            await addDoc(collection(db, "campeonatos"), camp);
+            alert('Campeonato cadastrado!');
+            document.querySelectorAll('#campCadastro input, #campCadastro textarea').forEach(el => el.value = '');
+            carregarCampeonatos();
+        } catch (e) { alert('Erro: ' + e.message); }
+    });
+
+    window.carregarCampeonatos = async () => {
+        const lista = document.getElementById('listaCampeonatos');
+        lista.innerHTML = '<p style="color:#999;">Carregando...</p>';
+        const q = query(collection(db, "campeonatos"), orderBy("data", "desc"));
+        const snap = await getDocs(q);
+        lista.innerHTML = '';
+        let total = 0;
+        if (snap.empty) { lista.innerHTML = '<p class="empty-state">Nenhum campeonato cadastrado.</p>'; return; }
+        snap.forEach((d) => {
+            total++;
+            const c = d.data();
+            const dataFmt = c.data ? new Date(c.data + 'T00:00:00').toLocaleDateString('pt-BR') : '-';
+            lista.innerHTML += `
+                <div class="camp-card">
+                    <div class="camp-header">
+                        <div>
+                            <div class="camp-titulo">🏆 ${c.nome}</div>
+                            <div class="camp-info">📅 ${dataFmt} &nbsp;|&nbsp; 📍 ${c.local} ${c.organizacao ? '&nbsp;|&nbsp; 🏅 ' + c.organizacao : ''}</div>
+                            ${c.observacoes ? `<div class="camp-info" style="margin-top:4px;">📝 ${c.observacoes}</div>` : ''}
+                        </div>
+                        <div class="camp-actions">
+                            <button class="btn-sm secundario" onclick="abrirModalInscrever('${d.id}', '${c.nome.replace(/'/g,"\\'")}')">👥 Inscrever</button>
+                            <button class="btn-sm secundario" onclick="abrirModalResultados('${d.id}', '${c.nome.replace(/'/g,"\\'")}')">🥇 Resultados</button>
+                            <button class="danger" onclick="deletarCampeonato('${d.id}')">Excluir</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        document.getElementById('totalCampeonatos').innerText = total;
+        atualizarTotalOuro();
+    }
+
+    async function atualizarTotalOuro() {
+        const snap = await getDocs(query(collection(db, "resultados"), where("resultado", "==", "Ouro")));
+        document.getElementById('totalOuro').innerText = snap.size;
+    }
+
+    window.deletarCampeonato = async (id) => {
+        if(confirm('Excluir este campeonato? As inscrições e resultados vinculados também serão removidos.')) {
+            await deleteDoc(doc(db, "campeonatos", id));
+            const snI = await getDocs(query(collection(db, "inscricoes"), where("campeonatoId", "==", id)));
+            snI.forEach(async d => await deleteDoc(doc(db, "inscricoes", d.id)));
+            const snR = await getDocs(query(collection(db, "resultados"), where("campeonatoId", "==", id)));
+            snR.forEach(async d => await deleteDoc(doc(db, "resultados", d.id)));
+            carregarCampeonatos();
+        }
+    }
+
+    // ---- MODAL INSCREVER ----
+    window.abrirModalInscrever = async (campId, campNome) => {
+        campAtualId = campId;
+        campAtualNome = campNome;
+        document.getElementById('modalCampNome').innerText = campNome;
+        document.getElementById('modalInscrever').classList.add('aberto');
+        carregarInscritos(campId);
+    }
+
+    window.fecharModal = (id) => document.getElementById(id).classList.remove('aberto');
+
+    document.getElementById('btnSalvarInscricao').addEventListener('click', async () => {
+        const sel = document.getElementById('inscricaoAluno');
+        const alunoId = sel.value;
+        const alunoNome = sel.options[sel.selectedIndex].text;
+        if (!alunoId) { alert('Selecione um aluno'); return; }
+        const inscricao = {
+            campeonatoId: campAtualId,
+            campeonatoNome: campAtualNome,
+            alunoId,
+            alunoNome,
+            categoria: document.getElementById('inscricaoCategoria').value,
+            valor: parseFloat(document.getElementById('inscricaoValor').value) || 0,
+            observacoes: document.getElementById('inscricaoObs').value,
+            criadoEm: new Date()
+        };
+        try {
+            await addDoc(collection(db, "inscricoes"), inscricao);
+            document.getElementById('inscricaoCategoria').value = '';
+            document.getElementById('inscricaoValor').value = '';
+            document.getElementById('inscricaoObs').value = '';
+            carregarInscritos(campAtualId);
+        } catch(e) { alert('Erro: ' + e.message); }
+    });
+
+    async function carregarInscritos(campId) {
+        const lista = document.getElementById('listaInscritos');
+        lista.innerHTML = '<p style="color:#999; font-size:13px;">Carregando...</p>';
+        const snap = await getDocs(query(collection(db, "inscricoes"), where("campeonatoId", "==", campId)));
+        if (snap.empty) { lista.innerHTML = '<p style="color:#666; font-size:13px;">Nenhum aluno inscrito.</p>'; return; }
+        lista.innerHTML = '';
+        snap.forEach(d => {
+            const i = d.data();
+            lista.innerHTML += `
+                <div class="inscrito-item">
+                    <div>
+                        <strong>${i.alunoNome}</strong>
+                        ${i.categoria ? `<span style="color:#999; font-size:12px;"> — ${i.categoria}</span>` : ''}
+                        ${i.valor ? `<span style="color:#FFD700; font-size:12px;"> | R$ ${i.valor.toFixed(2)}</span>` : ''}
+                    </div>
+                    <button class="danger" onclick="deletarInscricao('${d.id}', '${campId}')">✕</button>
+                </div>
+            `;
+        });
+    }
+
+    window.deletarInscricao = async (id, campId) => {
+        await deleteDoc(doc(db, "inscricoes", id));
+        carregarInscritos(campId);
+    }
+
+    // ---- MODAL RESULTADOS ----
+    window.abrirModalResultados = async (campId, campNome) => {
+        campAtualId = campId;
+        campAtualNome = campNome;
+        document.getElementById('modalResultCampNome').innerText = campNome;
+        document.getElementById('modalResultados').classList.add('aberto');
+        carregarResultados(campId);
+    }
+
+    document.getElementById('btnSalvarResultado').addEventListener('click', async () => {
+        const sel = document.getElementById('resultadoAluno');
+        const alunoId = sel.value;
+        const alunoNome = sel.options[sel.selectedIndex].text;
+        if (!alunoId) { alert('Selecione um aluno'); return; }
+        const resultado = {
+            campeonatoId: campAtualId,
+            campeonatoNome: campAtualNome,
+            alunoId,
+            alunoNome,
+            categoria: document.getElementById('resultadoCategoria').value,
+            resultado: document.getElementById('resultadoMedalha').value,
+            observacoes: document.getElementById('resultadoObs').value,
+            criadoEm: new Date()
+        };
+        try {
+            await addDoc(collection(db, "resultados"), resultado);
+            document.getElementById('resultadoCategoria').value = '';
+            document.getElementById('resultadoObs').value = '';
+            carregarResultados(campAtualId);
+            atualizarTotalOuro();
+        } catch(e) { alert('Erro: ' + e.message); }
+    });
+
+    async function carregarResultados(campId) {
+        const lista = document.getElementById('listaResultados');
+        lista.innerHTML = '<p style="color:#999; font-size:13px;">Carregando...</p>';
+        const snap = await getDocs(query(collection(db, "resultados"), where("campeonatoId", "==", campId)));
+        if (snap.empty) { lista.innerHTML = '<p style="color:#666; font-size:13px;">Nenhum resultado registrado.</p>'; return; }
+        lista.innerHTML = '';
+        snap.forEach(d => {
+            const r = d.data();
+            lista.innerHTML += `
+                <div class="inscrito-item">
+                    <div>
+                        ${medalhaHTML(r.resultado)}
+                        <strong style="margin-left:8px;">${r.alunoNome}</strong>
+                        ${r.categoria ? `<span style="color:#999; font-size:12px;"> — ${r.categoria}</span>` : ''}
+                        ${r.observacoes ? `<div style="color:#aaa; font-size:12px; margin-top:3px;">${r.observacoes}</div>` : ''}
+                    </div>
+                    <button class="danger" onclick="deletarResultado('${d.id}', '${campId}')">✕</button>
+                </div>
+            `;
+        });
+    }
+
+    window.deletarResultado = async (id, campId) => {
+        await deleteDoc(doc(db, "resultados", id));
+        carregarResultados(campId);
+        atualizarTotalOuro();
+    }
+
+    // ---- HISTÓRICO POR ALUNO ----
+    window.carregarHistoricoAluno = async () => {
+        const sel = document.getElementById('historicoAlunoSelect');
+        const alunoId = sel.value;
+        const div = document.getElementById('historicoAluno');
+        if (!alunoId) { div.innerHTML = '<p class="empty-state">Selecione um aluno para ver o histórico.</p>'; return; }
+        div.innerHTML = '<p style="color:#999;">Carregando...</p>';
+        const snap = await getDocs(query(collection(db, "resultados"), where("alunoId", "==", alunoId)));
+        if (snap.empty) { div.innerHTML = '<p class="empty-state">Nenhum resultado encontrado para este aluno.</p>'; return; }
+        let ouro = 0, prata = 0, bronze = 0;
+        let html = '';
+        snap.forEach(d => {
+            const r = d.data();
+            if(r.resultado === 'Ouro') ouro++;
+            else if(r.resultado === 'Prata') prata++;
+            else if(r.resultado === 'Bronze') bronze++;
+            html += `
+                <div class="historico-item">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <strong>${r.campeonatoNome}</strong>
+                            ${r.categoria ? `<span style="color:#999; font-size:12px;"> — ${r.categoria}</span>` : ''}
+                        </div>
+                        ${medalhaHTML(r.resultado)}
+                    </div>
+                    ${r.observacoes ? `<div style="color:#aaa; font-size:12px; margin-top:5px;">${r.observacoes}</div>` : ''}
+                </div>
+            `;
+        });
+        div.innerHTML = `
+            <div style="display:flex; gap:15px; margin-bottom:20px; flex-wrap:wrap;">
+                <div class="stat-box" style="flex:1; min-width:100px; cursor:default;"><h4>Ouros</h4><p style="color:#FFD700;">${ouro}</p></div>
+                <div class="stat-box" style="flex:1; min-width:100px; cursor:default;"><h4>Pratas</h4><p style="color:#C0C0C0;">${prata}</p></div>
+                <div class="stat-box" style="flex:1; min-width:100px; cursor:default;"><h4>Bronzes</h4><p style="color:#CD7F32;">${bronze}</p></div>
+                <div class="stat-box" style="flex:1; min-width:100px; cursor:default;"><h4>Total</h4><p>${ouro+prata+bronze}</p></div>
+            </div>
+            ${html}
+        `;
+    }
+
+    // ---- NAVEGAÇÃO ----
+    window.mostrarAba = (aba) => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
+        document.querySelectorAll('.conteudo').forEach(c => c.classList.remove('ativo'));
+        document.querySelector(`[onclick="mostrarAba('${aba}')"]`).classList.add('ativo');
+        document.getElementById(aba).classList.add('ativo');
+        if(aba === 'chamada') carregarAlunos();
+        if(aba === 'aniversarios') carregarAniversariantes();
+        if(aba === 'dashboard') { carregarAlunos(); carregarPedidos(); carregarCampeonatos(); }
+        if(aba === 'pedidos') carregarPedidos();
+        if(aba === 'campeonatos') carregarCampeonatos();
+    }
+
+    window.mostrarSubAba = (subAba) => {
+        document.querySelectorAll('.tab-camp').forEach(t => t.classList.remove('ativo'));
+        document.querySelectorAll('.conteudo-camp').forEach(c => c.style.display = 'none');
+        document.querySelector(`[onclick="mostrarSubAba('${subAba}')"]`).classList.add('ativo');
+        document.getElementById(subAba).style.display = 'block';
+        if(subAba === 'campLista') carregarCampeonatos();
+    }
+
+    // ---- NOTIFICAÇÕES ----
+    async function verificarNotificacoes() {
+        const area = document.getElementById('areaNotificacoes');
+        area.innerHTML = '';
+        const hoje = new Date();
+        const mesAtual = hoje.getMonth() + 1;
+        const diaAtual = hoje.getDate();
+
+        const snapAlunos = await getDocs(query(collection(db, "alunos"), orderBy("nome")));
+        let niverHoje = [];
+        let niverMes = [];
+        snapAlunos.forEach(d => {
+            const a = d.data();
+            if (!a.dataNascimento) return;
+            const nasc = new Date(a.dataNascimento + 'T00:00:00');
+            const mesNasc = nasc.getMonth() + 1;
+            const diaNasc = nasc.getDate();
+            if (mesNasc === mesAtual && diaNasc === diaAtual) niverHoje.push(a.nome);
+            else if (mesNasc === mesAtual) niverMes.push({ nome: a.nome, dia: diaNasc });
+        });
+
+        if (niverHoje.length > 0) {
+            niverHoje.forEach(nome => {
+                area.innerHTML += notifBanner('niver', '🎂', `Hoje é aniversário de ${nome}!`, 'Manda um parabéns pra ele(a) 🎉');
+            });
+            enviarNotifNavegador('🎂 Aniversário hoje!', niverHoje.map(n => n).join(', ') + ' faz aniversário hoje!');
+        }
+
+        if (niverMes.length > 0) {
+            niverMes.sort((a, b) => a.dia - b.dia);
+            const nomes = niverMes.map(n => `${n.nome} (dia ${n.dia})`).join(', ');
+            area.innerHTML += notifBanner('niver', '🎉', `${niverMes.length} aniversariante${niverMes.length > 1 ? 's' : ''} esse mês`, nomes);
+        }
+
+        const snapCamp = await getDocs(query(collection(db, "campeonatos"), orderBy("data")));
+        snapCamp.forEach(d => {
+            const c = d.data();
+            if (!c.data) return;
+            const dataCamp = new Date(c.data + 'T00:00:00');
+            const diffMs = dataCamp - hoje;
+            const diffDias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+            if (diffDias >= 0 && diffDias <= 3) {
+                const txt = diffDias === 0 ? 'É HOJE!' : diffDias === 1 ? 'Amanhã!' : `Em ${diffDias} dias`;
+                area.innerHTML += notifBanner('camp', '🏆', `Campeonato: ${c.nome}`, `${txt} — ${dataCamp.toLocaleDateString('pt-BR')} — ${c.local}`);
+                enviarNotifNavegador(`🏆 ${txt} — ${c.nome}`, `${dataCamp.toLocaleDateString('pt-BR')} em ${c.local}`);
+            }
+        });
+    }
+
+    function notifBanner(tipo, icon, titulo, texto) {
+        const id = 'notif_' + Math.random().toString(36).substr(2, 6);
+        return `
+            <div class="notif-banner ${tipo}" id="${id}">
+                <div class="notif-icon">${icon}</div>
+                <div class="notif-texto">
+                    <strong>${titulo}</strong>
+                    <span>${texto}</span>
+                </div>
+                <button class="notif-fechar" onclick="document.getElementById('${id}').remove()">✕</button>
+            </div>`;
+    }
+
+    function enviarNotifNavegador(titulo, corpo) {
+        if (!('Notification' in window)) return;
+        if (Notification.permission === 'granted') {
+            new Notification(titulo, { body: corpo, icon: 'logo.png' });
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(perm => {
+                if (perm === 'granted') new Notification(titulo, { body: corpo, icon: 'logo.png' });
+            });
+        }
+    }
+
+    // fechar modal clicando fora
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.addEventListener('click', (e) => { if(e.target === m) m.classList.remove('aberto'); });
+    });
+
+    // ---- SERVICE WORKER (PWA) ----
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW registrado:', reg.scope))
+                .catch(err => console.log('SW erro:', err));
+        });
+    }
+
+    // Prompt de instalação Android
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const banner = document.getElementById('installBanner');
+        if (banner) banner.style.display = 'flex';
+    });
+
+    window.addEventListener('appinstalled', () => {
+        const banner = document.getElementById('installBanner');
+        if (banner) banner.style.display = 'none';
+        deferredPrompt = null;
+    });
+
+    window.instalarApp = async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        document.getElementById('installBanner').style.display = 'none';
+    }
+</script>
+
+<!-- BANNER INSTALAR APP -->
+<div id="installBanner">
+    <img src="logo.png" alt="Best Way">
+    <div class="install-txt">
+        <strong>Instalar Best Way BJJ</strong>
+        <span>Adicionar à tela inicial</span>
+    </div>
+    <button class="install-btn" onclick="instalarApp()">Instalar</button>
+    <button class="install-close" onclick="document.getElementById('installBanner').style.display='none'">✕</button>
+</div>
+
+</body>
+</html>
